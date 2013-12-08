@@ -1,0 +1,45 @@
+dhavale watermark will work if we devote some capacity to evening out the bit count
+
+so we can assume n% of usable samples have been shifted
+
+so nth order statistic gives us threshold assuming even distribution of alpha
+
+we have to recompute nth order statistic each time
+
+luckily this is not too slow
+
+we obviously want median with this approach
+
+FRAME_SIZE steps of compute DWT
+
+FRAME_SIZE * FRAME_LENGTH steps of compute median / scan for bark ?
+
+next question
+
+how do we take care of overflow/underflow?
+
+pre step: make a bitmap of all frames s.t. shift by threshold would cause over/underflow
+
+bitmap only needs to mark "edgy" frames, which get each sample shifted by 2S, or kept the same if shifting would cause over/underflow
+
+edgy frames get unshifted specially, preserving values close to the edge
+
+mark is original-mark + ecc | compressed bitmap | balancing-act
+
+storage format:
+
+bark1 s bitmap balance bark2 x0 ys
+
+so that bark1 delineates frame boundaries and tells us how to clear the mark
+
+bark2 delineates start of mark
+
+x0 is a point in GF(2^m) (probably GF(2^8)), and ys are a polynomial evaluated at x0, x0+1, ...
+
+where len(ys) >= len(mark)
+
+i.e. assuming we embed at least len(mark) points, we can extract the mark
+
+we cycle x0 per frame, so if we don't recover enough points, we can scan another frame
+
+since threshold is the median, embedding strength is s.t. the smallest frame-to-be-expanded is just past threshold
