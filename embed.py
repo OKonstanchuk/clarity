@@ -23,7 +23,7 @@ def iddwt(cAA, cAD, cD):
     return pywt.idwt(cA, cD, family, correct_size=True)
 
 def energy(frame):
-    return sum(map(abs, fram))
+    return sum(map(lambda x: x * x, frame))
 
 def alpha(frame):
     acc = 0
@@ -95,6 +95,8 @@ def embed_block(block, bits, x0):
                 b = next(m)
                 if b:
                     cAAout = cAAout + expand(frame, s)
+                else:
+                    cAAout = cAAout + frame
             else:
                 cAAout = cAAout + expand(frame, s)
         else:
