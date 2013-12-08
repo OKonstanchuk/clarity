@@ -1,5 +1,7 @@
 import soxsig
+
 import numpy
+import os
 import pywt
 import sys
 
@@ -114,7 +116,11 @@ def embed(signal, mark):
     return sigout
 
 if __name__ == '__main__':
-    sigin = soxsig.load(sys.argv[1])
-    mark = sys.argv[2]
+    assert len(sys.argv) == 4
+    assert os.path.exists(sys.argv[2])
+    assert not os.path.exists(sys.argv[3])
+
+    mark = sys.argv[1]
+    sigin = soxsig.load(sys.argv[2])
     out = embed(sigin, mark)
-    soxsig.export(out, "out.wav")
+    soxsig.export(out, sys.argv[3])
