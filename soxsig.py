@@ -14,7 +14,6 @@ def load(filename):
           ,'-b', '16'
           ,'-'
           ]
-    print ' '.join(cmd)
     raw_audio = numpy.fromstring(subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=sys.stderr).communicate()[0], dtype='uint16')
     return raw_audio
 
@@ -29,6 +28,5 @@ def export(signal, filename):
           ,'-'
           ,filename
           ]
-    print ' '.join(cmd)
     subprocess.Popen(cmd, stdin=subprocess.PIPE, stderr=sys.stderr).communicate(signal.tostring())
 
